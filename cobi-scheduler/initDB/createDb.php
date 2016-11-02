@@ -24,7 +24,7 @@ SOFTWARE.
 include "../settings/settings.php";
 
 mysql_connect(COBI_MYSQL_SERVER, COBI_MYSQL_USERNAME, COBI_MYSQL_PASSWORD);
-@mysql_select_db(COBI_MYSQL_PASSWORD) or die( "Unable to select database");
+@mysql_select_db(COBI_MYSQL_DATABASE) or die( "Unable to select database");
 
 				      
 
@@ -35,8 +35,8 @@ $userQ = "CREATE TABLE users (uid varchar(32), name varchar(128), email varchar(
   echo mysql_error();
 
 // Create transactions table
-$transQ = "CREATE TABLE transactions (id MEDIUMINT NOT NULL AUTO_INCREMENT, uid varchar(32), type varchar(32), data text, previous text, PRIMARY KEY (id))"; 				      
-				      mysql_query($transQ)
+$transQ = "CREATE TABLE transactions (id MEDIUMINT NOT NULL AUTO_INCREMENT, uid varchar(32), type varchar(32), previousType varchar(32), data text, previous text, localHash text, PRIMARY KEY (id))";
+mysql_query($transQ);
 echo mysql_error();
 
 // Create Schedule Table
@@ -71,8 +71,16 @@ echo  mysql_error();
   programNumber varchar(128), session text, title text, type
   varchar(128))";
 
-   mysql_query($entityQ); 
-   echo mysql_error();
+mysql_query($entityQ);
+echo mysql_error();
+
+$sessionChairQ = "CREATE TABLE sessionChairs (authorId varchar(128), type varchar(128), id varchar(128), venue varchar(128), rank int(11), givenName text, middleInitial varchar(128), familyName text, email text, role varchar(128), primaryAff text, secondardAff text, affinity text)";
+mysql_query($sessionChairQ);
+echo mysql_error();
+
+$authorQ = "CREATE TABLE authorsourcing ( authorId varchar(128), id varchar(128), great tinyint(1), ok tinyint(1), notsure tinyint(1), notok tinyint(1), interested tinyint(1),relevant tinyint(1) )";
+mysql_query($authorQ);
+echo mysql_error();
 
 mysql_close();
 
